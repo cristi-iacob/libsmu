@@ -459,9 +459,9 @@ build_script:
   # update pip to keep it from complaining
   #- "C:/msys64/mingw32/bin/python2.exe -m pip install --upgrade pip"
   # wheel needs to be installed in order to build binary wheels for pysmu
-  #- "C:/msys64/mingw32/bin/python2.exe -m  pip install --only-binary :all: wheel"
+  - "C:/msys64/mingw32/bin/python2.exe -m  pip install --only-binary :all: wheel"
   # cython is required for generating the extensions
-  #- "C:/msys64/mingw32/bin/python2.exe -m  pip install cython"
+  - "C:/msys64/mingw32/bin/python2.exe -m  pip install cython"
 
   # build python dist files
   #- cd C:\projects\libsmu\bindings\python
