@@ -48,8 +48,8 @@ if(DEB_DETECT_DEPENDENCIES AND DPKG_CMD AND DPKGQ_CMD)
 		OUTPUT_STRIP_TRAILING_WHITESPACE)
 	# don't add a package dependancy if it is not installed locally
 	# these should be the debian package names
-		set(PACKAGES "${PACKAGES} libusb-1")
-		set(PACKAGES "${PACKAGES} libboost")
+		set(PACKAGES "${PACKAGES} libusb-1.0-0-dev")
+		set(PACKAGES "${PACKAGES} libboost-all-dev")
 
 	# find the version of the installed package, which is hard to do in
 	# cmake first, turn the list into an list (seperated by semicolons)
@@ -103,7 +103,7 @@ if(DEB_DETECT_DEPENDENCIES AND DPKG_CMD AND DPKGQ_CMD)
 		${CPACK_DEBIAN_PACKAGE_DEPENDS})
 else()
 	# assume everything is turned on, and running on a modern OS
-	set(CPACK_DEBIAN_PACKAGE_DEPENDS "boost (>=0.1.0), libusb-1.0-0 (>= 2:1.0.17)")
+	set(CPACK_DEBIAN_PACKAGE_DEPENDS "libboost-all-dev (>=0.1.0), libusb-1.0-0-dev (>= 2:1.0.17)")
 	message(STATUS "Using default dependencies for packaging")
 endif()
 
