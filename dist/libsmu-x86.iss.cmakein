@@ -48,7 +48,7 @@ Source: "C:\libsmu-python\pysmu27-win32.msi"; DestDir: "{tmp}"; Flags: deleteaft
 Source: "C:\libsmu-python\pysmu36-win32.msi"; DestDir: "{tmp}"; Flags: deleteafterinstall
 Source: "C:\libsmu-python\pysmu37-win32.msi"; DestDir: "{tmp}"; Flags: deleteafterinstall
 
-Source: "C:\libsmu\32\*.dll"; DestDir: "{app}"; Flags: onlyifdoesntexist
+Source: "C:\libsmu\32\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 Source: "C:\WinDDK\7600.16385.1\redist\DIFx\dpinst\EngMui\x86\dpinst.exe"; DestDir: "{app}\drivers"; Tasks: drivers
 Source: "C:\libsmu\drivers\m1k-winusb.inf"; DestDir: "{app}\drivers"; Tasks: drivers
