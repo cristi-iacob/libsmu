@@ -52,6 +52,28 @@ fi
 done
 }
 
+check_file deb python3
+if [ -n "${temp}" ] ; then
+	deploy=$(expr ${deploy} + 1)
+	if [ -z "${TARGET_DEB}" ] ; then
+		export TARGET_DEB=$(echo ${temp} | \
+			sed -e 's:^./.*/::' -e 's:.deb$::')${LDIST}.deb
+	fi
+	echo "deploying ${temp} to nightly $TARGET_DEB"
+	if [ -z "${RELEASE_PY_FILE_DEB}" ] ; then
+		export RELEASE_PY_FILE_DEB=$(dirname ${temp})/${TARGET_DEB}
+		cp ${temp} ${RELEASE_PY_FILE_DEB}
+	fi
+	echo ${TARGET_DEB}
+	ls -lh ${temp}
+	echo ${RELEASE_PY_FILE_DEB}
+	ls -lh ${RELEASE_PY_FILE_DEB}
+else
+	echo "Skipping deployment of debian package"
+fi
+
+temp=""
+TARGET_DEB=""
 check_file deb
 if [ -n "${temp}" ] ; then
 	deploy=$(expr ${deploy} + 1)
@@ -140,3 +162,4 @@ fi
 echo "===" ${RELEASE_PKG_FILE_PKG}
 echo "===" ${RELEASE_PKG_FILE_TGZ}
 echo "===" ${RELEASE_PKG_FILE_DEB}
+echo "===" ${RELEASE_PY_FILE_DEB}
