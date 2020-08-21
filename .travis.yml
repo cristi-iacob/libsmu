@@ -10,21 +10,21 @@ matrix:
       dist: bionic
       language: python
       python: 3.6
-      env: PYTHON=python PIP=pip
+      env: PYTHON=python3 PIP=pip3
       cache: pip
     - os: linux
       sudo: required
       dist: xenial
       language: python
       python: 3.6
-      env: PYTHON=python PIP=pip
+      env: PYTHON=python3 PIP=pip3
       cache: pip
     - os: linux
       sudo: required
       dist: focal
       language: python
       python: 3.6
-      env: PYTHON=python PIP=pip
+      env: PYTHON=python3 PIP=pip3
       cache: pip
     - os: osx
       osx_image: xcode10.1
@@ -65,8 +65,9 @@ install:
   - if [[ ${TRAVIS_OS_NAME} == osx ]]; then sudo easy_install pip; fi
   - ${PIP} install --only-binary ":all:" --disable-pip-version-check --upgrade pip
   - if [[ ${TRAVIS_OS_NAME} == osx ]]; then sudo ${PIP} install --only-binary ":all:" wheel cython ; fi
-  - if [[ ${TRAVIS_OS_NAME} == linux ]]; then ${PIP} install --only-binary ":all:" wheel cython ; fi
-  - if [[ ${TRAVIS_OS_NAME} == linux ]]; then ${PIP} install --upgrade cython ; fi
+  #- if [[ ${TRAVIS_OS_NAME} == linux ]]; then ${PIP} install --only-binary ":all:" wheel cython ; fi
+  - if [[ ${TRAVIS_OS_NAME} == linux ]]; then ${PIP} install Cython ; fi
+  - if [[ ${TRAVIS_OS_NAME} == linux ]]; then sudo apt-get install python3-setuptools fakeroot python3-all ; fi
 
 script:
   # build tar containg python files
@@ -90,15 +91,17 @@ script:
   - ${PYTHON} -c "import struct; print(struct.calcsize('P') * 8)"
   - ${PYTHON} setup.py build_ext -L "${TRAVIS_BUILD_DIR}"/build/src
   - "${PYTHON} setup.py build"
-  - sudo ${PYTHON} setup.py install
+  #- sudo ${PYTHON} setup.py install
   - "${PYTHON} setup.py bdist_wheel --skip-build"
-
-  - if [[ ${TRAVIS_OS_NAME} == linux ]]; then ${PIP} install stdeb ; fi
-  #- if [[ ${TRAVIS_OS_NAME} == linux ]]; then ${PIP} install setuptools ; fi
-  - if [[ ${TRAVIS_OS_NAME} == linux ]]; then sudo apt-get install python3-stdeb fakeroot python3-all-dev ; fi
-  - if [[ ${TRAVIS_OS_NAME} == linux ]]; then sudo sed -i 's/my\ \$ignore_missing_info\ =\ 0;/my\ \$ignore_missing_info\ =\ 1;/' /usr/bin/dpkg-shlibdeps ; fi
-  - if [[ ${TRAVIS_OS_NAME} == linux ]]; then ${PYTHON} setup.py sdist ; fi
-  - if [[ ${TRAVIS_OS_NAME} == linux ]]; then sudo python setup.py --command-packages=stdeb.command bdist_deb ; fi
+  - if [[ ${TRAVIS_OS_NAME} == linux ]]; then ${PIP} install py2deb ; fi 
+  - if [[ ${TRAVIS_OS_NAME} == linux ]]; then py2deb -r . .
+  #- if [[ ${TRAVIS_OS_NAME} == linux ]]; then sudo sed -i 's/my\ \$ignore_missing_info\ =\ 0;/my\ \$ignore_missing_info\ =\ 1;/' /usr/bin/dpkg-shlibdeps ; fi
+  #- if [[ ${TRAVIS_OS_NAME} == linux ]]; then export PYTHONPATH=/home/travis/virtualenv/python3.6.10/lib/python3.6/site-packages:$PYTHONPATH ; fi
+  #- if [[ ${TRAVIS_OS_NAME} == linux ]]; then ${PYTHON} setup.py sdist ; fi
+  #- if [[ ${TRAVIS_OS_NAME} == linux ]]; then sudo ${PYTHON} setup.py --command-packages=stdeb.command bdist_deb ; fi
+  #- if [[ ${TRAVIS_OS_NAME} == linux ]]; then ${PYTHON} setup.py --command-packages=stdeb.command sdist_dsc ; fi
+  #- if [[ ${TRAVIS_OS_NAME} == linux ]]; then cd "$(find . -type d -name "debian" | head -n 1)" ; fi
+  #- if [[ ${TRAVIS_OS_NAME} == linux ]]; then sudo env DEB_BUILD_OPTIONS=nocheck debuild -us -uc ; fi
 
 before_deploy:
   - ". ${TRAVIS_BUILD_DIR}/CI/travis/before_deploy"
@@ -110,7 +113,7 @@ deploy:
     file:
       - "${RELEASE_PKG_FILE_DEB}"
       - "${RELEASE_PKG_FILE_TGZ}"
-      - bindings/python/deb_dist/*.deb
+      - bindings/python/*.deb
     skip_cleanup: true
     on:
       repo: cristi-iacob/libsmu
