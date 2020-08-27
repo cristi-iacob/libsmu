@@ -78,15 +78,10 @@ script:
   # build tar containg python files
   - if [[ ${TRAVIS_OS_NAME} == linux ]]; then mkdir -p build_tar && cd build_tar; fi
   - if [[ ${TRAVIS_OS_NAME} == linux ]]; then cmake -DDEB_DETECT_DEPENDENCIES=ON -DENABLE_PACKAGING=ON -DUSE_PYTHON2=OFF -DBUILD_PYTHON=ON ..; make package; rm *.deb; cd .. ; fi
-
+  
   - mkdir -p build && cd build
-  - if [[ ${TRAVIS_OS_NAME} == linux ]]; then cmake -DDEB_DETECT_DEPENDENCIES=ON -DENABLE_PACKAGING=ON -DUSE_PYTHON2=OFF -DBUILD_PYTHON=OFF ..; make package; rm *.tar.gz; fi
-
-  # Build tar.gz for OSX (contains libraries and python bindings)
-  - if [[ ${TRAVIS_OS_NAME} == osx ]]; then cmake -DENABLE_PACKAGING=ON -DUSE_PYTHON2=OFF ..; make package; fi
-
-  # Build pkg for OSX (contains libsmu.framework - only base library)
-  - if [[ ${TRAVIS_OS_NAME} == osx ]]; then cmake -DOSX_PACKAGE=ON -DENABLE_PACKAGING=OFF -DUSE_PYTHON2=OFF .. ; fi
+  # Build tar.gz for OSX (contains libraries and smu)
+  - if [[ ${TRAVIS_OS_NAME} == osx ]]; then cmake -DENABLE_PACKAGING=ON -DBUILD_PYTHON=OFF ..; make package; fi
   - make
   - sudo make install
   - ls
