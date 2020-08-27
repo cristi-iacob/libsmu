@@ -106,25 +106,25 @@ before_deploy:
 
 deploy:
   - provider: releases
-    api_key:
-      secure: LW6KL6nixaLLEkZKE/knz9qGtbUmJU3G3F1Rexo8xMEQyUOePS99OTNANjI38zlOWP3Cbcrrl2Palz7B9ZXkFYnT9NjRNB15ox1LOEeZTGKT65+N11Te8WpHHcQVXFc5e3BupmYdwv7vMh+a4RTbq/nRF0X/OzbV/Nyxlzlw6fA=
+    api_key: $GITHUB_TOKEN
     file:
       - "${RELEASE_PKG_FILE_DEB}"
       - "${RELEASE_PKG_FILE_TGZ}"
       - "${RELEASE_PY_FILE_DEB}"
     skip_cleanup: true
     on:
-      repo: analogdevicesinc/libsmu
+      repo: cristi-iacob/libsmu
       tags: true
       condition: "($TRAVIS_OS_NAME = linux)"
   - provider: releases
-    api_key:
-      secure: LW6KL6nixaLLEkZKE/knz9qGtbUmJU3G3F1Rexo8xMEQyUOePS99OTNANjI38zlOWP3Cbcrrl2Palz7B9ZXkFYnT9NjRNB15ox1LOEeZTGKT65+N11Te8WpHHcQVXFc5e3BupmYdwv7vMh+a4RTbq/nRF0X/OzbV/Nyxlzlw6fA=
+    api_key: $GITHUB_TOKEN
     file:
       - "${RELEASE_PKG_FILE_PKG}"
       - "${RELEASE_PKG_FILE_TGZ}"
     skip_cleanup: true
     on:
-      repo: analogdevicesinc/libsmu
+      repo: cristi-iacob/libsmu
       tags: true
       condition: "$TRAVIS_OS_NAME = osx"
+
+
